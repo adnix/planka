@@ -6,32 +6,22 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import ReactTimeAgo from 'react-time-ago';
 
 import getDateFormat from '../../../utils/get-date-format';
-import ExpirableTime from './ExpirableTime';
 
-const TimeAgo = React.memo(({ date, withExpiration }) => {
-  const [t, i18n] = useTranslation();
+const TimeAgo = React.memo(({ date }) => {
+  const [t] = useTranslation();
 
-  const verboseDateFormatter = useCallback(
+  const formattedDate = useCallback(
     (value) =>
       t(`format:${getDateFormat(value)}`, {
         value,
         postProcess: 'formatDate',
       }),
     [t],
-  );
+  )(date);
 
-  return (
-    <ReactTimeAgo
-      date={date}
-      timeStyle="round-minute"
-      locale={i18n.resolvedLanguage}
-      component={withExpiration ? ExpirableTime : undefined}
-      formatVerboseDate={verboseDateFormatter}
-    />
-  );
+  return <span>{formattedDate}</span>;
 });
 
 TimeAgo.propTypes = {
